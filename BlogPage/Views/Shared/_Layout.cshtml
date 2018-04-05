@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="~/templateBlog/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/templateBlog/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/templateBlog/sweetalert/dist/sweetalert.css">
+    <link rel="stylesheet" href="~/templateBlog/css/stisla.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg main-navbar" style="background-color:mediumaquamarine; padding:30px;float:right;">
+        <div class="container">
+            @using (Html.BeginForm("Index", "BlogPosts", FormMethod.Post, htmlAttributes: new { @class = "form" }))
+
+            {<div class="controls controls-row search-row">
+                    <input id="searchStr" name="searchStr" class="input-block-level" type="text"
+                           placeholder="Search">
+                    <button id="searchStr" class="btn btn-success" type="submit">
+                        <i class="icon-search">Submit</i>
+                    </button>
+                </div>
+            }
+
+            <button class="navbar-toggler" type="button" @*data-toggle="collapse" data-target="#navbarNav"*@ aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="text-align:center;">
+                <span class="navbar-toggler-icon">
+                    <i class="ion-navicon"></i>
+                </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="mr-auto"></div>
+
+                <ul class="navbar-nav">
+
+                    <li class="nav-item" style="padding-right:15px">
+                        <a class="nav-link smooth-link">@Html.ActionLink("Home", "Index", "BlogPosts", null, new { @class = "btn btn-xs btn-info" })</a>
+                    </li>
+                    <li class="nav-item" style="padding-right:15px">
+                        <a class="nav-link smooth-link">@Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-xs btn-info" }) </a>
+                    </li>
+                    <li>
+                    <li class=" nav-item" style="padding-right:15px">
+                        <a class="nav-link smooth-link">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-xs btn-info" })</a>
+                    </li>
+                    <li class="nav-item">
+                        @Html.Partial("_LoginPartial")
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    @*<footer>
+
+
+
+        </footer>*@
+
+    <script src="~/templateBlog/js/jquery.min.js"></script>
+    <script src="~/templateBlog/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/templateBlog/js/jquery.easeScroll.js"></script>
+    <script src="~/templateBlog/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/templateBlog/js/stisla.js"></script>
+    <script src="~/Scripts/jquery.dotdotdot.min.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    @RenderSection("scripts", required: false)
+
+
+    @*<script>
+        jQuery(document).ready(function ($) {
+
+            $(".jqDot").dotdotdot({
+
+                callback: function (isTruncated) { },
+                /* Function invoked after truncating the text.
+                   Inside this function, "this" refers to the wrapper. */
+
+                ellipsis: "\u2026 ",
+                /* The text to add as ellipsis. */
+
+                height: 50,
+                /* The (max-)height for the wrapper:
+                   null: measure the CSS (max-)height ones;
+                   a number: sets a specific height in pixels;
+                   "watch": re-measures the CSS (max-)height in the "watch". */
+
+                keep: null,
+                /* jQuery-selector for elements to keep after the ellipsis. */
+
+                tolerance: 0
+                        /* Deviation for the measured wrapper height. */
+
+               truncate: "word",
+                /* How to truncate the text: By "node", "word" or "letter". */
+
+                watch: "window",
+                /* Whether to update the ellipsis:
+                   true: Monitors the wrapper width and height;
+                   "window": Monitors the window width and height. */
+
+            });
+        });
+    </script>*@
+
+
+</body>
+
+</html>

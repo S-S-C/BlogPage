@@ -1,0 +1,75 @@
+﻿@model BlogPage.Models.BlogPost
+
+<section class="padding">
+    <div class="form-horizontal" style="padding-top:50px">
+
+        <p class="h3">
+            @Html.DisplayFor(model => model.Title)
+        </p>
+
+        <div class="col-sm-4">
+
+            <p>
+                @if (Model.MediaURL != null)
+                {
+                    <img class="card-img-top" src="@Url.Content(Model.MediaURL)" />
+                }
+            </p>
+
+            <div>
+                <p> Created: @Model.Created.ToString("MMM dd yyyy")  </p>
+
+            </div>
+
+            <p>
+                @Html.Raw(Model.Body)
+            </p>
+        </div>
+
+    </div>
+
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input name="PostId" value="@Model.Id" hidden />
+        <div class="form-horizontal">
+            <p style="padding-left:70px;font-weight:bold;">Comments</p>
+            <div class="form-group">
+                <div class="col-md-10" style="padding-left:70px">
+                    <textarea name="Body" cols="150" rows="5"> </textarea>
+                    <input type="submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+
+    }
+    <div class="col-md-10" style="padding-left:70px;">
+        @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+        {
+
+            <p>
+                @comment.Author.DisplayName  |  @comment.Created.ToString("MMM dd yyyy hh:mm:ss")
+            </p>
+            <p>
+                @comment.Body
+            </p>
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                <p>
+                    @Html.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, new { @class = "btn btn-xs btn-info" })
+                </p>
+
+                <p>
+                    @Html.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, new { @class = "btn btn-xs btn-info" })
+                </p>
+            }
+
+
+        }
+    </div>
+    <div class="button" style="padding-left:30px;padding-top:30px;">
+        <p>
+            @Html.ActionLink("Home", "Index", "BlogPosts")
+        </p>
+    </div>
+</section>

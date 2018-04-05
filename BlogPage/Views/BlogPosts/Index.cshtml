@@ -1,0 +1,88 @@
+﻿@model PagedList.PagedList<BlogPage.Models.BlogPost>
+@using PagedList;
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<section class="hero bg-overlay" id="hero" data-bg="/Uploads/mainblogpic.jpeg">
+    <div class="text py-6" style="padding-top:150px">
+        <h2 style="color:darkcyan;font-family:'Brush Script MT';font-size:50px"> Blog by Sathya</h2>
+</section>
+
+<section class="padding" id="features">
+    <div class="container">
+
+        <div class="desc">
+            <h2 style="color:mediumaquamarine; font-family:'Courier New'; font-size:30px; text-align:center;">Welcome to my Blog Page</h2><br />
+            <p style="color:black; font-size:20px; font-family:'Courier New', Times, serif;text-align:center;">
+                "Design is not just what it looks like and feels like. Design is how it works."...Steve Jobs <br />
+                Here I will be writing about some of my thoughts and experiences weekly!
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="padding bg-grey" id="blog">
+    <div class="container">
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                <a class="nav-link">@Html.ActionLink("Create New", "Create", "BlogPosts", new { @class = "btn btn-sm btn-info" })</a>
+            </p>
+        }
+        <h2 class="section-title" style="color:mediumaquamarine; font-family:'Courier New'; font-size:30px">My Weekly Posts</h2>
+
+        <div class="section-body">
+            <div class="row col-spacing">
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-12 col-md-3 col-lg-4">
+                        <article class="card">
+                            @if (item.MediaURL != null)
+                            {
+                                <img class="card-img-top" src="@Url.Content(item.MediaURL)" style="width:340px; height:300px" />
+                            }
+                            <div class="card-body">
+                                <div class="card-subtitle mb-2 text-muted">My <a href="#">Blog</a> on @Html.DisplayFor(modelItem => item.Created)</div>
+                                <h4 class="card-title" data-toggle="read" data-id="1">@Html.DisplayFor(modelItem => item.Title)</h4>
+                                @{
+                                    var lenBody = item.Body.Length;
+                                    if (lenBody < 100)
+                                    {
+                                        <p class="card-text" data-toggle="read" data-class="1">@Html.Raw(item.Body)</p>
+                                    }
+                                    else
+                                    {
+
+                                    <p class="card-text jqDot" data-toggle="read" data-class="1">@Html.Raw(item.Body.Substring(0, 100))...</p>
+                                    }
+                                }
+                                <div class="text-right">
+                                    <a href="@Url.Action("Details", new { slug = item.Slug })" class="card-more">Read More <i class="ion-ios-arrow-right"></i></a>
+                                </div>
+                            </div>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-info" })
+
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-info" })
+                            }
+
+                        </article>
+                    </div>
+                }
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }))
+        </div>
+        <div class="row align-items-center mt-5">
+            <div class="col-12 col-md-10" style="font-size:20px;font-family:'Courier New'; color:mediumaquamarine">
+                <p class="text-muted">If you have anything to say feel free to comment!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
